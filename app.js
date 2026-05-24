@@ -513,16 +513,19 @@ function renderPickerList() {
       const row = document.createElement('button');
       row.type = 'button';
       row.className = 'picker-row';
+      const noteClean = (it.note || '').replace(/_x000D_/g, '');
       row.innerHTML = `
-        <span class="code">${escapeHTML(it.code)}</span>
-        <span class="name-block">
-          <span class="name">${escapeHTML(it.name)}</span>
-          ${it.note ? `<span class="note">${escapeHTML(it.note)}</span>` : ''}
-        </span>
-        <span class="price-block">
-          <span class="price">¥${formatYen(it.price)}</span>
-          <span class="unit">/${escapeHTML(it.unit)}</span>
-        </span>
+        <div class="picker-row-top">
+          <span class="code">${escapeHTML(it.code)}</span>
+          <span class="name-block">
+            <span class="name">${escapeHTML(it.name)}</span>
+          </span>
+          <span class="price-block">
+            <span class="price">¥${formatYen(it.price)}</span>
+            <span class="unit">/${escapeHTML(it.unit)}</span>
+          </span>
+        </div>
+        ${noteClean ? `<div class="picker-row-note"><span class="note-text">${escapeHTML(noteClean)}</span></div>` : ''}
       `;
       row.addEventListener('click', () => handlePickerTap(it));
       list.appendChild(row);

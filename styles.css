@@ -459,16 +459,23 @@ input {
 
 .picker-row {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
-  align-items: flex-start;
   width: 100%;
   text-align: left;
 }
 
 .picker-row:active {
   background: var(--accent-soft);
+}
+
+.picker-row-top {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .picker-row .code {
@@ -491,10 +498,18 @@ input {
   word-break: break-word;
 }
 
-.picker-row .note {
+.picker-row-note {
+  /* code(52px) + gap(8px) ぶん左にインデント → 名称の頭から右端まで備考が展開 */
+  padding-left: 60px;
+}
+
+.picker-row .note-text {
+  display: block;
   font-size: 11px;
   color: var(--text-secondary);
-  margin-top: 2px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
 }
 
 .picker-row .price-block {
