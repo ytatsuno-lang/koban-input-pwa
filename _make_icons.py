@@ -10,7 +10,7 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "icons")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 FONT_PATH = "/System/Library/Fonts/ヒラギノ角ゴシック W8.ttc"
-BG = (0, 122, 255, 255)    # iOS system blue
+BG = (136, 216, 197, 255)  # mint / aqua
 FG = (255, 255, 255, 255)  # white
 
 # Layout (fractions of canvas size)
