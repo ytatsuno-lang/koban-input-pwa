@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="工番入力">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>工番入力</title>
+</head>
+<body>
+  <header class="topbar">
+    <button id="btn-paste" class="topbar-btn" type="button" aria-label="貼り付け項目">
+      <span class="icon">☰</span><span class="label">貼り付け</span>
+    </button>
+    <h1 class="topbar-title">工番入力</h1>
+    <div class="topbar-right">
+      <button id="btn-master" class="topbar-btn" type="button" aria-label="工番一覧">
+        <span class="icon">▦</span><span class="label">一覧</span>
+      </button>
+      <button id="btn-text" class="topbar-btn" type="button" aria-label="テキストプレビュー">
+        <span class="icon">📄</span><span class="label">テキスト</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card header-card">
+      <div class="row date-row">
+        <label for="work-date">作業日</label>
+        <input id="work-date" type="date">
+      </div>
+      <div class="row total-row">
+        <span class="total-label">総額</span>
+        <span class="total-value" id="total-value">¥0</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">明細</div>
+      <div id="rows-container"></div>
+      <button id="btn-add-row" class="add-row-btn" type="button">
+        <span class="plus">＋</span>行を追加
+      </button>
+    </section>
+
+    <p class="footer-note">入力はこのデバイスのブラウザに自動保存されます。</p>
+  </main>
+
+  <!-- 工番選択モーダル -->
+  <div id="picker-modal" class="modal" hidden>
+    <div class="modal-content picker-content">
+      <header class="modal-header">
+        <button class="modal-close" id="picker-close" type="button">閉じる</button>
+        <h2 id="picker-title">工番を選択</h2>
+        <span class="modal-spacer"></span>
+      </header>
+
+      <nav class="category-tabs" id="category-tabs"></nav>
+
+      <div class="picker-table-header">
+        <span class="col-code">工番</span>
+        <span class="col-name">名称</span>
+        <span class="col-price">単価</span>
+      </div>
+
+      <div class="picker-list" id="picker-list"></div>
+
+      <div class="history-bar" id="history-bar" hidden>
+        <div class="history-header">
+          <span>🕘 最近の検索</span>
+          <button id="history-clear" type="button">消去</button>
+        </div>
+        <div class="history-chips" id="history-chips"></div>
+      </div>
+
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input id="search-input" type="search" inputmode="search" enterkeyhint="search"
+               placeholder="工番・名称で検索（空欄でEnter＝全件）" autocomplete="off">
+        <button id="search-clear" class="search-clear" type="button" hidden>✕</button>
+      </div>
+
+      <div class="toast" id="picker-toast" hidden></div>
+    </div>
+  </div>
+
+  <!-- テキストプレビュー モーダル -->
+  <div id="text-modal" class="modal" hidden>
+    <div class="modal-content text-content">
+      <header class="modal-header">
+        <button class="modal-close" id="text-close" type="button">閉じる</button>
+        <h2>テキスト</h2>
+        <button class="copy-btn" id="text-copy" type="button">📋 コピー</button>
+      </header>
+
+      <label class="toggle-row">
+        <input id="text-detailed" type="checkbox">
+        <span>詳細表示（名称・単位・金額を含む）</span>
+      </label>
+
+      <pre class="text-preview" id="text-preview"></pre>
+
+      <div class="toast" id="text-toast" hidden>コピーしました</div>
+    </div>
+  </div>
+
+  <!-- 貼り付け項目モーダル -->
+  <div id="paste-modal" class="modal" hidden>
+    <div class="modal-content paste-content">
+      <header class="modal-header">
+        <button class="modal-close" id="paste-close" type="button">閉じる</button>
+        <h2>貼り付け項目</h2>
+        <span class="modal-spacer"></span>
+      </header>
+
+      <div class="paste-header">
+        <span class="paste-progress" id="paste-progress">0 / 0</span>
+        <button id="paste-reset" class="link-btn" type="button">最初に戻す</button>
+      </div>
+      <p class="paste-help">ANDPADの各フィールドをタップ → このアプリの該当行をタップ → ANDPADに戻って貼り付け、を繰り返します。</p>
+
+      <div class="paste-list" id="paste-list"></div>
+
+      <div class="toast" id="paste-toast" hidden></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
