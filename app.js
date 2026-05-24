@@ -711,6 +711,19 @@ function wireUI() {
     renderHeader();
   });
 
+  // clear rows
+  $('btn-clear-rows').addEventListener('click', () => {
+    // 既に空1行ならスキップ
+    const hasContent = state.rows.length > 1 ||
+      (state.rows[0] && (state.rows[0].code !== '' || state.rows[0].quantity !== 1));
+    if (!hasContent) return;
+    if (!confirm('明細をクリアします。\n（作業日と検索履歴は残ります）')) return;
+    state.rows = [{ id: uid(), code: '', quantity: 1 }];
+    persistRows();
+    renderRows();
+    renderHeader();
+  });
+
   // picker modal
   $('picker-close').addEventListener('click', closePicker);
 
