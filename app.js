@@ -379,6 +379,15 @@ function buildRowElement(row, idx) {
 
   line1.appendChild(qtyGroup);
 
+  // 小計（上段右側に表示）
+  const matched = itemFor(row.code);
+  if (matched) {
+    const sub = document.createElement('span');
+    sub.className = 'row-subtotal';
+    sub.textContent = '¥' + formatYen(subtotal(row));
+    line1.appendChild(sub);
+  }
+
   // 行削除ボタン
   if (state.rows.length > 1) {
     const del = document.createElement('button');
@@ -397,14 +406,13 @@ function buildRowElement(row, idx) {
 
   wrap.appendChild(line1);
 
-  // 2行目: 名称・単価・小計 or エラー
-  const matched = itemFor(row.code);
+  // 2行目: 名称＋単価 or エラー
   const line2 = document.createElement('div');
   if (matched) {
     line2.className = 'row-line2';
     line2.innerHTML = `
       <span class="name">${escapeHTML(matched.name)}</span>
-      <span class="meta">¥${formatYen(matched.price)}/${escapeHTML(matched.unit)} → 小計 <span class="subtotal">¥${formatYen(subtotal(row))}</span></span>
+      <span class="meta">¥${formatYen(matched.price)}/${escapeHTML(matched.unit)}</span>
     `;
     wrap.appendChild(line2);
   } else if (row.code) {
