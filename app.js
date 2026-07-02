@@ -337,24 +337,6 @@ function buildRowElement(row, idx) {
   }
 
   // 数量
-  const qtyGroup = document.createElement('div');
-  qtyGroup.className = 'qty-group';
-
-  const minus = document.createElement('button');
-  minus.type = 'button';
-  minus.className = 'qty-btn minus';
-  minus.textContent = '−';
-  // フォーカスを input から奪わないように pointerdown を抑制
-  minus.addEventListener('pointerdown', (e) => e.preventDefault());
-  minus.addEventListener('click', () => {
-    row.quantity = Math.max(0, (row.quantity || 0) - 1);
-    qtyInput.value = formatQuantity(row.quantity);
-    updateRowSubtotal(row);
-    renderHeader();
-    persistRows();
-  });
-  qtyGroup.appendChild(minus);
-
   const qtyInput = document.createElement('input');
   qtyInput.type = 'text';
   qtyInput.inputMode = 'decimal';
@@ -372,23 +354,7 @@ function buildRowElement(row, idx) {
   qtyInput.addEventListener('blur', () => {
     qtyInput.value = formatQuantity(row.quantity);
   });
-  qtyGroup.appendChild(qtyInput);
-
-  const plus = document.createElement('button');
-  plus.type = 'button';
-  plus.className = 'qty-btn plus';
-  plus.textContent = '＋';
-  plus.addEventListener('pointerdown', (e) => e.preventDefault());
-  plus.addEventListener('click', () => {
-    row.quantity = (row.quantity || 0) + 1;
-    qtyInput.value = formatQuantity(row.quantity);
-    updateRowSubtotal(row);
-    renderHeader();
-    persistRows();
-  });
-  qtyGroup.appendChild(plus);
-
-  line1.appendChild(qtyGroup);
+  line1.appendChild(qtyInput);
 
   // 小計（上段右側に表示）
   if (matched) {

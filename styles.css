@@ -215,13 +215,13 @@ input {
   color: var(--accent);
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   min-width: 60px;
   flex-shrink: 0;
 }
 
 .row-unit-price {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -243,49 +243,19 @@ input {
   color: var(--text-secondary);
 }
 
-.qty-group {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.qty-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-
-.qty-group:focus-within .qty-btn {
-  display: flex;
-}
-
-.qty-btn.plus {
-  color: var(--accent);
-}
-
-.qty-btn:active {
-  background: var(--accent-soft);
-}
-
 .qty-input {
-  width: 56px;
+  width: 42px;
   text-align: center;
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   padding: 3px 4px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--card);
   font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  margin-left: auto;
 }
 
 .row-line2 {
@@ -310,7 +280,7 @@ input {
 .row-subtotal {
   font-family: var(--mono);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text);
   font-variant-numeric: tabular-nums;
   min-width: 56px;
