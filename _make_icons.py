@@ -14,8 +14,8 @@ BG = (136, 216, 197, 255)  # mint / aqua
 FG = (255, 255, 255, 255)  # white
 
 # Layout (fractions of canvas size)
-PADDING = 0.08            # outer padding
-CELL_GAP = 0.04           # gap between the 4 characters
+PADDING = 0.06            # outer padding
+CELL_GAP = 0.03           # gap between the 4 characters
 
 CHARS = [["工", "番"], ["入", "力"]]
 
@@ -45,25 +45,20 @@ def make_icon(size: int) -> Image.Image:
     inner = size - 2 * pad
     cell = (inner - gap) / 2  # each character cell is a square
 
-    # Target glyph size: 92% of cell (leaves small breathing room)
-    glyph_target = cell * 0.92
-
-    # Find a font size that makes the widest of the 4 characters fit
-    fit_sizes = [
-        fit_font_size(draw, ch, glyph_target, FONT_PATH)
-        for row in CHARS for ch in row
-    ]
-    font_size = min(fit_sizes)
-    font = ImageFont.truetype(FONT_PATH, font_size)
+    # 各字を可能な限りセルを埋めるまで拡大
+    glyph_target = cell * 0.98
 
     for row in range(2):
         for col in range(2):
             ch = CHARS[row][col]
-            cell_x = pad + col * (cell + gap)
-            cell_y = pad + row * (cell + gap)
+            # 文字ごとに独立にフィッティング（単純な字は大きく、複雑な字はそれなりに）
+            fs = fit_font_size(draw, ch, glyph_target, FONT_PATH)
+            font = ImageFont.truetype(FONT_PATH, fs)
             bbox = draw.textbbox((0, 0), ch, font=font)
             text_w = bbox[2] - bbox[0]
             text_h = bbox[3] - bbox[1]
+            cell_x = pad + col * (cell + gap)
+            cell_y = pad + row * (cell + gap)
             tx = cell_x + (cell - text_w) / 2 - bbox[0]
             ty = cell_y + (cell - text_h) / 2 - bbox[1]
             draw.text((tx, ty), ch, font=font, fill=FG)

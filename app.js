@@ -381,7 +381,6 @@ function buildRowElement(row, idx) {
     del.className = 'row-delete';
     del.textContent = '削除';
     del.addEventListener('click', () => {
-      if (!confirm(`${row.code ? row.code + ' を' : 'この行を'}削除しますか？`)) return;
       state.rows = state.rows.filter(r => r.id !== row.id);
       persistRows();
       renderRows();
