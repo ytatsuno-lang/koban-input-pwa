@@ -327,14 +327,12 @@ function buildRowElement(row, idx) {
   codeBtn.addEventListener('click', () => openPicker('select', row.id));
   line1.appendChild(codeBtn);
 
-  // 単価/単位（matched時のみ、上段の code の隣）
+  // 単価/単位（未選択時も空 span を置いて数量位置を揃える）
   const matched = itemFor(row.code);
-  if (matched) {
-    const up = document.createElement('span');
-    up.className = 'row-unit-price';
-    up.textContent = `¥${formatYen(matched.price)}/${matched.unit}`;
-    line1.appendChild(up);
-  }
+  const up = document.createElement('span');
+  up.className = 'row-unit-price';
+  up.textContent = matched ? `¥${formatYen(matched.price)}/${matched.unit}` : '';
+  line1.appendChild(up);
 
   // 数量
   const qtyInput = document.createElement('input');
