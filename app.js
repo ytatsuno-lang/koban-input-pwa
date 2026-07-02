@@ -295,6 +295,11 @@ function renderHeader() {
 }
 
 function renderRows() {
+  // セーフティネット: 何らかの理由で行が空なら1行を復活
+  if (!Array.isArray(state.rows) || state.rows.length === 0) {
+    state.rows = [{ id: uid(), code: '', quantity: 1 }];
+    persistRows();
+  }
   const container = $('rows-container');
   container.innerHTML = '';
   state.rows.forEach((row, idx) => {
