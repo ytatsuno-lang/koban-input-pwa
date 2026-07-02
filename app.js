@@ -327,9 +327,14 @@ function buildRowElement(row, idx) {
   codeBtn.addEventListener('click', () => openPicker('select', row.id));
   line1.appendChild(codeBtn);
 
-  const spacer = document.createElement('div');
-  spacer.className = 'row-spacer';
-  line1.appendChild(spacer);
+  // 単価/単位（matched時のみ、上段の code の隣）
+  const matched = itemFor(row.code);
+  if (matched) {
+    const up = document.createElement('span');
+    up.className = 'row-unit-price';
+    up.textContent = `¥${formatYen(matched.price)}/${matched.unit}`;
+    line1.appendChild(up);
+  }
 
   // 数量
   const qtyGroup = document.createElement('div');
@@ -339,11 +344,14 @@ function buildRowElement(row, idx) {
   minus.type = 'button';
   minus.className = 'qty-btn minus';
   minus.textContent = '−';
+  // フォーカスを input から奪わないように pointerdown を抑制
+  minus.addEventListener('pointerdown', (e) => e.preventDefault());
   minus.addEventListener('click', () => {
     row.quantity = Math.max(0, (row.quantity || 0) - 1);
-    persistRows();
-    renderRows();
+    qtyInput.value = formatQuantity(row.quantity);
+    updateRowSubtotal(row);
     renderHeader();
+    persistRows();
   });
   qtyGroup.appendChild(minus);
 
@@ -356,9 +364,10 @@ function buildRowElement(row, idx) {
   qtyInput.addEventListener('change', () => {
     const v = parseFloat(qtyInput.value);
     row.quantity = isFinite(v) ? v : 0;
-    persistRows();
-    renderRows();
+    qtyInput.value = formatQuantity(row.quantity);
+    updateRowSubtotal(row);
     renderHeader();
+    persistRows();
   });
   qtyInput.addEventListener('blur', () => {
     qtyInput.value = formatQuantity(row.quantity);
@@ -369,18 +378,19 @@ function buildRowElement(row, idx) {
   plus.type = 'button';
   plus.className = 'qty-btn plus';
   plus.textContent = '＋';
+  plus.addEventListener('pointerdown', (e) => e.preventDefault());
   plus.addEventListener('click', () => {
     row.quantity = (row.quantity || 0) + 1;
-    persistRows();
-    renderRows();
+    qtyInput.value = formatQuantity(row.quantity);
+    updateRowSubtotal(row);
     renderHeader();
+    persistRows();
   });
   qtyGroup.appendChild(plus);
 
   line1.appendChild(qtyGroup);
 
   // 小計（上段右側に表示）
-  const matched = itemFor(row.code);
   if (matched) {
     const sub = document.createElement('span');
     sub.className = 'row-subtotal';
@@ -406,14 +416,11 @@ function buildRowElement(row, idx) {
 
   wrap.appendChild(line1);
 
-  // 2行目: 名称＋単価 or エラー
+  // 2行目: 名称のみ or エラー
   const line2 = document.createElement('div');
   if (matched) {
     line2.className = 'row-line2';
-    line2.innerHTML = `
-      <span class="name">${escapeHTML(matched.name)}</span>
-      <span class="meta">¥${formatYen(matched.price)}/${escapeHTML(matched.unit)}</span>
-    `;
+    line2.innerHTML = `<span class="name">${escapeHTML(matched.name)}</span>`;
     wrap.appendChild(line2);
   } else if (row.code) {
     line2.className = 'row-line2 no-match';
@@ -422,6 +429,13 @@ function buildRowElement(row, idx) {
   }
 
   return wrap;
+}
+
+function updateRowSubtotal(row) {
+  const wrap = document.querySelector(`[data-row-id="${row.id}"]`);
+  if (!wrap) return;
+  const sub = wrap.querySelector('.row-subtotal');
+  if (sub) sub.textContent = '¥' + formatYen(subtotal(row));
 }
 
 function escapeHTML(s) {
