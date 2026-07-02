@@ -360,8 +360,9 @@ function buildRowElement(row, idx) {
   sub.textContent = matched ? '¥' + formatYen(subtotal(row)) : '';
   line1.appendChild(sub);
 
-  // 行削除ボタン
-  if (state.rows.length > 1) {
+  // 行削除ボタン（最後の行は入力用に常に残すため × を出さない）
+  const isLastRow = idx === state.rows.length - 1;
+  if (!isLastRow) {
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'row-delete';
