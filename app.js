@@ -575,7 +575,15 @@ function handlePickerTap(item) {
     // 行に書き戻し
     const row = state.rows.find(r => r.id === state.pickerTargetRowId);
     if (row) {
+      const wasEmpty = row.code === '';
       row.code = item.code;
+      // 空だった最終行を初めて埋めたら、次の入力用に空行を自動追加
+      if (wasEmpty) {
+        const idx = state.rows.findIndex(r => r.id === row.id);
+        if (idx === state.rows.length - 1) {
+          state.rows.push({ id: uid(), code: '', quantity: 1 });
+        }
+      }
       persistRows();
       renderRows();
       renderHeader();
