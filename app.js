@@ -317,7 +317,7 @@ function buildRowElement(row, idx) {
   if (row.code) {
     codeBtn.innerHTML = `<span>${escapeHTML(row.code.toUpperCase())}</span><span class="chevron">▼</span>`;
   } else {
-    codeBtn.innerHTML = `<span>工番を選ぶ</span><span class="chevron">▼</span>`;
+    codeBtn.innerHTML = `<span>工番</span><span class="chevron">▼</span>`;
   }
   codeBtn.addEventListener('click', () => openPicker('select', row.id));
   line1.appendChild(codeBtn);
