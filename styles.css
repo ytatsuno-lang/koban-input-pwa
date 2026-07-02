@@ -213,7 +213,6 @@ input {
   background: rgba(0,0,0,0.06);
   border-radius: 8px;
   color: var(--accent);
-  font-family: var(--mono);
   font-weight: 700;
   font-size: 13px;
   min-width: 60px;
@@ -246,7 +245,6 @@ input {
 .qty-input {
   width: 42px;
   text-align: center;
-  font-family: var(--mono);
   font-weight: 700;
   font-size: 13px;
   padding: 3px 4px;
@@ -278,7 +276,6 @@ input {
 }
 
 .row-subtotal {
-  font-family: var(--mono);
   font-weight: 700;
   font-size: 13px;
   color: var(--text);
