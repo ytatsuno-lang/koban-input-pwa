@@ -305,40 +305,37 @@ input {
 .row-delete {
   margin-left: auto;
   color: var(--red);
-  font-size: 13px;
-  padding: 4px 8px;
+  font-size: 22px;
+  line-height: 1;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 400;
+}
+
+.row-delete:active {
+  background: rgba(255, 59, 48, 0.15);
 }
 
 .row-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 8px;
-}
-
-.add-row-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 0;
-  color: var(--accent);
-  font-weight: 500;
-  justify-content: flex-start;
-}
-
-.add-row-btn .plus {
-  font-size: 20px;
-  line-height: 1;
+  margin-top: 4px;
 }
 
 .clear-rows-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
+  justify-content: center;
+  padding: 4px 8px;
   color: var(--red);
-  font-weight: 500;
-  font-size: 14px;
+  font-size: 20px;
+  line-height: 1;
   border-radius: 8px;
 }
 

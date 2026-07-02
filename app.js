@@ -379,7 +379,8 @@ function buildRowElement(row, idx) {
     const del = document.createElement('button');
     del.type = 'button';
     del.className = 'row-delete';
-    del.textContent = '削除';
+    del.setAttribute('aria-label', '行を削除');
+    del.textContent = '×';
     del.addEventListener('click', () => {
       state.rows = state.rows.filter(r => r.id !== row.id);
       persistRows();
@@ -711,14 +712,6 @@ function wireUI() {
   $('work-date').addEventListener('change', (e) => {
     state.workDate = e.target.value || todayISO();
     persistWorkDate();
-  });
-
-  // add row
-  $('btn-add-row').addEventListener('click', () => {
-    state.rows.push({ id: uid(), code: '', quantity: 1 });
-    persistRows();
-    renderRows();
-    renderHeader();
   });
 
   // clear rows
