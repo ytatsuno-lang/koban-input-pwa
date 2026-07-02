@@ -354,13 +354,11 @@ function buildRowElement(row, idx) {
   });
   line1.appendChild(qtyInput);
 
-  // 小計（上段右側に表示）
-  if (matched) {
-    const sub = document.createElement('span');
-    sub.className = 'row-subtotal';
-    sub.textContent = '¥' + formatYen(subtotal(row));
-    line1.appendChild(sub);
-  }
+  // 小計（未選択時も空 span を置いて数量位置を揃える）
+  const sub = document.createElement('span');
+  sub.className = 'row-subtotal';
+  sub.textContent = matched ? '¥' + formatYen(subtotal(row)) : '';
+  line1.appendChild(sub);
 
   // 行削除ボタン
   if (state.rows.length > 1) {
