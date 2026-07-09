@@ -334,7 +334,24 @@ function buildRowElement(row, idx) {
   up.textContent = matched ? `¥${formatYen(matched.price)}/${matched.unit}` : '';
   line1.appendChild(up);
 
-  // 数量
+  // 数量（− input +）
+  const qtyGroup = document.createElement('div');
+  qtyGroup.className = 'qty-group';
+
+  const minus = document.createElement('button');
+  minus.type = 'button';
+  minus.className = 'qty-btn minus';
+  minus.textContent = '−';
+  minus.addEventListener('pointerdown', (e) => e.preventDefault());
+  minus.addEventListener('click', () => {
+    row.quantity = Math.max(0, (row.quantity || 0) - 1);
+    qtyInput.value = formatQuantity(row.quantity);
+    updateRowSubtotal(row);
+    renderHeader();
+    persistRows();
+  });
+  qtyGroup.appendChild(minus);
+
   const qtyInput = document.createElement('input');
   qtyInput.type = 'text';
   qtyInput.inputMode = 'decimal';
@@ -352,7 +369,23 @@ function buildRowElement(row, idx) {
   qtyInput.addEventListener('blur', () => {
     qtyInput.value = formatQuantity(row.quantity);
   });
-  line1.appendChild(qtyInput);
+  qtyGroup.appendChild(qtyInput);
+
+  const plus = document.createElement('button');
+  plus.type = 'button';
+  plus.className = 'qty-btn plus';
+  plus.textContent = '＋';
+  plus.addEventListener('pointerdown', (e) => e.preventDefault());
+  plus.addEventListener('click', () => {
+    row.quantity = (row.quantity || 0) + 1;
+    qtyInput.value = formatQuantity(row.quantity);
+    updateRowSubtotal(row);
+    renderHeader();
+    persistRows();
+  });
+  qtyGroup.appendChild(plus);
+
+  line1.appendChild(qtyGroup);
 
   // 小計（未選択時も空 span を置いて数量位置を揃える）
   const sub = document.createElement('span');
@@ -398,7 +431,9 @@ function updateRowSubtotal(row) {
   const wrap = document.querySelector(`[data-row-id="${row.id}"]`);
   if (!wrap) return;
   const sub = wrap.querySelector('.row-subtotal');
-  if (sub) sub.textContent = '¥' + formatYen(subtotal(row));
+  if (!sub) return;
+  const matched = itemFor(row.code);
+  sub.textContent = matched ? '¥' + formatYen(subtotal(row)) : '';
 }
 
 function escapeHTML(s) {

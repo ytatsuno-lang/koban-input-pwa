@@ -201,7 +201,7 @@ input {
 .row-line1 {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   margin-bottom: 1px;
 }
 
@@ -245,8 +245,37 @@ input {
   color: var(--text-secondary);
 }
 
+.qty-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.qty-btn.plus {
+  color: var(--accent);
+}
+
+.qty-btn:active {
+  background: var(--accent-soft);
+}
+
 .qty-input {
-  width: 42px;
+  width: 40px;
   text-align: center;
   font-weight: 700;
   font-size: 13px;
@@ -256,7 +285,6 @@ input {
   background: var(--card);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
-  margin-left: auto;
 }
 
 .row-line2 {
