@@ -1,5 +1,5 @@
 /* KobanInput Service Worker */
-const CACHE_VERSION = 'koban-v23';
+const CACHE_VERSION = 'koban-v24';
 const APP_SHELL = [
   './',
   'index.html',

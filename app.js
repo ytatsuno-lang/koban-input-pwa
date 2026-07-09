@@ -2,6 +2,8 @@
    KobanInput PWA - app.js
    ============================================================ */
 
+const APP_VERSION = 'v24';
+
 // -------------------- State --------------------
 const STORAGE_KEYS = {
   rows: 'koban-rows',
@@ -828,6 +830,10 @@ function wireUI() {
   }
   wireUI();
   renderAll();
+
+  // フッターにバージョン表示
+  const footer = document.querySelector('.footer-note');
+  if (footer) footer.textContent = `入力はこのデバイスのブラウザに自動保存されます。 (${APP_VERSION})`;
 
   // Service Worker
   if ('serviceWorker' in navigator) {
