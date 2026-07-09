@@ -2,7 +2,7 @@
    KobanInput PWA - app.js
    ============================================================ */
 
-const APP_VERSION = 'v24';
+const APP_VERSION = 'v25';
 
 // -------------------- State --------------------
 const STORAGE_KEYS = {
@@ -835,10 +835,18 @@ function wireUI() {
   const footer = document.querySelector('.footer-note');
   if (footer) footer.textContent = `入力はこのデバイスのブラウザに自動保存されます。 (${APP_VERSION})`;
 
-  // Service Worker
+  // Service Worker（updateViaCache: 'none' で sw.js の HTTP キャッシュを無効化し、
+  // controllerchange で新 SW が active になったら即リロード）
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW reg failed', err));
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+      .then((reg) => reg.update().catch(() => {}))
+      .catch((err) => console.warn('SW reg failed', err));
+
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
     });
   }
 })();
