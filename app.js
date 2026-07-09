@@ -2,7 +2,7 @@
    KobanInput PWA - app.js
    ============================================================ */
 
-const APP_VERSION = 'v25';
+const APP_VERSION = 'v26';
 
 // -------------------- State --------------------
 const STORAGE_KEYS = {
