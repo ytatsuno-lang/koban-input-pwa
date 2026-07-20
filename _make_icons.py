@@ -10,12 +10,13 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "icons")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 FONT_PATH = "/System/Library/Fonts/ヒラギノ角ゴシック W8.ttc"
-BG = (136, 216, 197, 255)  # mint / aqua
+BG = (79, 191, 166, 255)   # 少し濃いめのティール
 FG = (255, 255, 255, 255)  # white
 
 # Layout (fractions of canvas size)
 PADDING = 0.06            # outer padding
 CELL_GAP = 0.03           # gap between the 4 characters
+CORNER_RADIUS = 0.22      # 角丸半径 (size に対する比率、iOS squircle 相当)
 
 CHARS = [["工", "番"], ["入", "力"]]
 
@@ -37,8 +38,11 @@ def fit_font_size(draw, ch, target_size, font_path):
     return best
 
 def make_icon(size: int) -> Image.Image:
-    img = Image.new("RGBA", (size, size), BG)
+    # 一旦 RGBA 透明キャンバスに角丸長方形で背景を描く
+    img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
+    radius = int(size * CORNER_RADIUS)
+    draw.rounded_rectangle([(0, 0), (size, size)], radius=radius, fill=BG)
 
     pad = size * PADDING
     gap = size * CELL_GAP
